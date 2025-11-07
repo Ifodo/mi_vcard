@@ -147,7 +147,7 @@
           <span class="badge">RF/Broadcast Systems</span>
         </div>
         <div class="links">
-          <a class="btn primary" href="martin_ifodo_contact_with_photo.vcf" download>Download vCard (.vcf)</a>
+          <a class="btn primary" href="#" id="download-vcard">Download vCard (.vcf)</a>
           <a class="btn" href="https://wa.me/2348026817134" target="_blank" rel="noopener">WhatsApp</a>
           <a class="btn" href="https://www.linkedin.com/in/martin-ifodo-a6540062" target="_blank" rel="noopener">LinkedIn</a>
           <a class="btn" href="https://elektranbroadcast.com" target="_blank" rel="noopener">Website</a>
@@ -172,5 +172,66 @@
 
     <footer><code></code><code>Elektran | Autotrack Solutions: </code> Radio | TV setup | Streaming | Mobile and Web app development | Fleet Tracking solutions</footer>
   </main>
+  <script>
+    (function() {
+      const downloadBtn = document.getElementById('download-vcard');
+      if (!downloadBtn) return;
+
+      downloadBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Get the base64 image from the avatar
+        const avatarImg = document.querySelector('.avatar img');
+        const photoBase64 = avatarImg ? avatarImg.src.replace(/^data:image\/[a-z]+;base64,/, '') : '';
+        
+        // Build vCard content
+        const vcard = [
+          'BEGIN:VCARD',
+          'VERSION:3.0',
+          'FN:Martin Ifodo',
+          'N:Ifodo;Martin;;;',
+          'ORG:Elektran Integrated Services Ltd',
+          'TITLE:Software Engineer • AI Developer • Broadcast Engineer',
+          'EMAIL;TYPE=WORK:info@elektranbroadcast.com',
+          'EMAIL;TYPE=HOME:elektranbroadcast@gmail.com',
+          'TEL;TYPE=CELL:+234 802 681 7134',
+          'TEL;TYPE=WORK:+234 913 501 0605',
+          'ADR;TYPE=WORK:;;;Lagos;;;Nigeria',
+          'URL:https://elektranbroadcast.com',
+          'URL;TYPE=LinkedIn:https://www.linkedin.com/in/martin-ifodo-a6540062',
+          'NOTE:Edge AI, MLOps, Audio/TV engineering, IoT/Telematics'
+        ];
+
+        // Add photo if available (vCard 3.0 format)
+        if (photoBase64) {
+          // For vCard 3.0, base64 photos should be on a single line
+          // Some devices may not support embedded photos, but we include it anyway
+          vcard.push('PHOTO;ENCODING=b;TYPE=JPEG:' + photoBase64);
+        }
+
+        vcard.push('END:VCARD');
+        
+        const vcardContent = vcard.join('\r\n');
+        
+        // Create blob and download
+        const blob = new Blob([vcardContent], { type: 'text/vcard;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        
+        // Create temporary link and trigger download
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'Martin_Ifodo.vcf';
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        
+        // Cleanup
+        setTimeout(function() {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 100);
+      });
+    })();
+  </script>
 </body>
 </html>
